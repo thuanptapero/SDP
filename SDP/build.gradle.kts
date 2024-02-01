@@ -67,6 +67,7 @@ publishing {
     }
 }
 
+
 abstract class SDPFactory : DefaultTask() {
     companion object {
         private const val MIN_DPI = 300
@@ -96,7 +97,6 @@ abstract class SDPFactory : DefaultTask() {
             createFile(folder, "positive_sdps.xml", dpi, isNegative = false)
             createFile(folder, "negative_sdps.xml", dpi, isNegative = true)
             createFile(folder, "positive_ssps.xml", dpi, isNegative = false, unit = "sp")
-            createFile(folder, "negative_ssps.xml", dpi, isNegative = true, unit = "sp")
         }
     }
 
@@ -106,6 +106,7 @@ abstract class SDPFactory : DefaultTask() {
         dpi: Int,
         isNegative: Boolean,
         unit: String = "dp") {
+
         val file = File(folder, fileName)
         if (!file.exists()) {
             file.createNewFile()
@@ -117,8 +118,8 @@ abstract class SDPFactory : DefaultTask() {
             val max = if (isNegative) negativeMax else positiveMax
             for (i in 1..max) {
                 val dimensionValue = String.format("%.2f", i * dpi / defaultDpi.toFloat())
-                val dimenName = if (isNegative) "_minus${i}s$unit" else "_${i}sdp"
-                printerWriter.println("<dimen name=\"$dimenName\">${if (isNegative) "-$dimensionValue" else dimensionValue}$unit</dimen>")
+                val dimenName = if (isNegative) "_minus${i}s$unit" else "_${i}s$unit"
+                printerWriter.println("\t <dimen name=\"$dimenName\">${if (isNegative) "-$dimensionValue" else dimensionValue}$unit</dimen>")
             }
             printerWriter.println("</resources>")
         }
