@@ -12,18 +12,11 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
-
+        minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 
     buildTypes {
         release {
@@ -41,13 +34,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -60,15 +50,24 @@ publishing {
     publications {
         create<MavenPublication>("release") {
             groupId = "dev.no.room113"
-            artifactId = "utils"
-            version = "0.0.1"
+            artifactId = "sdp"
+            version = "0.0.3"
+        }
+    }
 
-            afterEvaluate {
-                from(components["release"])
+    repositories {
+        maven {
+            name = "github"
+            url = uri("https://maven.pkg.github.com/thuanptapero/SDP")
+            credentials {
+                username = project.findProperty("gpr.user") as String?
+                password = project.findProperty("gpr.key") as String?
             }
         }
     }
 }
+
+
 
 abstract class SDPFactory : DefaultTask() {
     companion object {
